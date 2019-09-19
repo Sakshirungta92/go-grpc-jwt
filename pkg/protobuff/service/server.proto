@@ -1,0 +1,19 @@
+syntax = "proto3";
+package authservice.service;
+
+option go_package = "authservice/service";
+
+import "api/auth/auth.proto";
+import "api/user/user.proto";
+
+message Empty {}
+
+service Auth {
+    rpc Ping (Empty) returns (Empty);
+
+    // RPC related to Authentication
+    rpc Login (authservice.auth.AuthRequest) returns (authservice.auth.AuthResponse);
+    rpc SignUp (authservice.user.CreateUserRequest) returns (authservice.auth.AuthResponse);
+    rpc GetUserDetails (Empty) returns (authservice.user.UserDetails);
+    rpc UpdateUserDetails (authservice.user.UpdateUserRequest) returns (authservice.user.UserDetails);
+}

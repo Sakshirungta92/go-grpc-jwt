@@ -1,0 +1,12 @@
+# https://taskfile.org
+
+version: '1'
+
+tasks:
+  protoc_go:
+    desc: generate go stubs from protocol buffers
+    cmds:
+      - find -name -prune -o -name '*.proto' -print | while read proto_file; do {
+          protoc -I . $proto_file --go_out=plugins=grpc,paths=source_relative:.;
+        } < /dev/null; done
+

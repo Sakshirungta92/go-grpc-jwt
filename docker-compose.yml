@@ -1,0 +1,40 @@
+version: '3'
+
+volumes:
+  database_data:
+    driver: local
+  
+networks:
+  authservice:
+    driver: bridge
+
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      # DATABASE_HOST: localhost
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
+    networks:
+      - authservice
+    volumes:
+      - database_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    restart: always
+    expose:
+      - 7777
+    ports:
+      - 7777:7777
+    networks:
+      - authservice
+    links:
+      - db
+    depends_on:
+      - db
+
